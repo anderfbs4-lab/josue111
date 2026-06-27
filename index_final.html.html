@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josué 1:11 — Inteligência Climática</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.14.0/dist/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f8f7f4;--surface:#fff;--surface2:#f2f1ee;
+  --border:rgba(0,0,0,0.10);--border-strong:rgba(0,0,0,0.18);
+  --text:#0b0b0b;--text-sec:#52514e;--text-muted:#898781;
+  --blue:#185FA5;--blue-bg:#E6F1FB;--blue-dark:#042C53;--blue-mid:#85B7EB;
+  --green:#3B6D11;--green-bg:#EAF3DE;
+  --amber:#854F0B;--amber-bg:#FAEEDA;
+  --red:#A32D2D;--red-bg:#FCEBEB;
+  --radius:8px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;}
+
+/* HEADER */
+.header{background:var(--blue-dark);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px;}
+.header-left{display:flex;align-items:center;gap:10px;}
+.hicon{width:34px;height:34px;border-radius:8px;background:rgba(133,183,235,0.2);display:flex;align-items:center;justify-content:center;}
+.hicon i{font-size:18px;color:var(--blue-mid);}
+.htitle{color:#fff;font-size:14px;font-weight:600;}
+.hsub{color:var(--blue-mid);font-size:11px;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.sdot{width:7px;height:7px;border-radius:50%;background:#0ca30c;flex-shrink:0;}
+.sdot.spin{animation:blink 1s infinite;background:#EF9F27;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.stext{font-size:11px;color:var(--blue-mid);}
+.btn-run{display:flex;align-items:center;gap:5px;padding:7px 14px;background:var(--blue-mid);color:var(--blue-dark);border:none;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-run:hover{background:#B5D4F4;}
+.btn-run:disabled{opacity:0.5;cursor:not-allowed;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{animation:spin 1s linear infinite;display:inline-block;}
+
+/* ALERT */
+.alert-bar{padding:9px 1.5rem;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;border-bottom:1px solid transparent;}
+.a-ok{background:var(--green-bg);color:var(--green);border-color:#C0DD97;}
+.a-watch{background:var(--amber-bg);color:var(--amber);border-color:#FAC775;}
+.a-warn{background:var(--red-bg);color:var(--red);border-color:#F7C1C1;}
+.a-emerg{background:#4A1B0C;color:#F5C4B3;border-color:#D85A30;}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:1.2rem 1.2rem;}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:1.2rem;}
+.metric{background:var(--surface);border-radius:var(--radius);border:0.5px solid var(--border);padding:12px 14px;}
+.mlabel{font-size:10px;color:var(--text-muted);display:flex;align-items:center;gap:4px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;}
+.mvalue{font-size:24px;font-weight:600;line-height:1;color:var(--text);}
+.msub{font-size:11px;color:var(--text-sec);margin-top:2px;}
+.m-ok .mvalue{color:var(--green);}
+.m-warn .mvalue{color:var(--amber);}
+.m-danger .mvalue{color:var(--red);}
+
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:1.5px solid var(--border);margin-bottom:1.2rem;overflow-x:auto;}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-muted);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1.5px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* CHAT */
+.chatbox{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;min-height:160px;font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--text);}
+.chatbox.empty{color:var(--text-muted);font-style:italic;}
+.input-row{display:flex;gap:6px;margin-top:8px;}
+.cinput{flex:1;padding:8px 12px;border:0.5px solid var(--border-strong);border-radius:var(--radius);font-size:13px;color:var(--text);background:var(--surface);font-family:inherit;}
+.cinput:focus{outline:none;border-color:var(--blue);}
+.btn-sec{padding:8px 14px;font-size:13px;border:0.5px solid var(--border-strong);border-radius:var(--radius);background:var(--surface);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:4px;font-family:inherit;white-space:nowrap;}
+.btn-sec:hover{background:var(--surface2);}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.pill{font-size:12px;padding:4px 10px;border:0.5px solid var(--blue);color:var(--blue);border-radius:20px;background:transparent;cursor:pointer;font-family:inherit;}
+.pill:hover{background:var(--blue-bg);}
+
+/* COMMODITIES */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:7px;}
+.ccard{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 12px;}
+.cname{font-size:13px;font-weight:600;margin-bottom:4px;}
+.rbadge{font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px;display:inline-block;}
+.r-low{background:var(--green-bg);color:var(--green);}
+.r-med{background:var(--amber-bg);color:var(--amber);}
+.r-high{background:#FAECE7;color:#993C1D;}
+.r-crit{background:var(--red-bg);color:var(--red);}
+.cnote{font-size:11px;color:var(--text-muted);margin-top:3px;}
+
+/* RESERVOIRS */
+.ritem{margin-bottom:10px;}
+.rheader{display:flex;justify-content:space-between;font-size:12px;color:var(--text-sec);margin-bottom:3px;}
+.rname{font-weight:500;}
+.bartrack{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+.barfill{height:100%;border-radius:4px;transition:width 0.8s;}
+
+/* FAMILY */
+.alist{list-style:none;}
+.aitem{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border);align-items:flex-start;}
+.aitem:last-child{border-bottom:none;}
+.anum{width:22px;height:22px;border-radius:50%;background:var(--blue-bg);color:var(--blue);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.atext{font-size:13px;line-height:1.6;}
+
+/* CARDS */
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
+.stitle{font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:5px;margin-bottom:10px;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:600px){.two{grid-template-columns:1fr;}}
+
+/* VERSE */
+.verse{text-align:center;font-style:italic;font-size:12px;color:var(--text-muted);border-top:0.5px solid var(--border);padding:14px 0 4px;margin-top:1.5rem;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="hicon"><i class="ti ti-eye"></i></div>
+    <div>
+      <div class="htitle">Josué 1:11 — Inteligência Climática</div>
+      <div class="hsub">Vigilância El Niño 2026/2027 · Segurança alimentar · Brasil</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="sdot" id="sdot"></div>
+    <span class="stext" id="stext">Pronto</span>
+    <button class="btn-run" id="btn-run" onclick="runAnalysis()">
+      <i class="ti ti-radar"></i> Executar vigilância
+    </button>
+  </div>
+</header>
+
+<div class="alert-bar a-watch" id="alert-bar">
+  <i class="ti ti-alert-triangle"></i>
+  <span id="alert-text">Clique em "Executar vigilância" para iniciar o ciclo completo de análise com dados ao vivo.</span>
+</div>
+
+<div class="main">
+
+  <div class="metrics">
+    <div class="metric" id="m-enso">
+      <div class="mlabel"><i class="ti ti-wave-sine"></i> ENSO / Niño 3.4</div>
+      <div class="mvalue" id="v-enso">—</div>
+      <div class="msub" id="s-enso">Aguardando análise</div>
+    </div>
+    <div class="metric" id="m-chuva">
+      <div class="mlabel"><i class="ti ti-cloud-rain"></i> Anomalia chuvas</div>
+      <div class="mvalue" id="v-chuva">—</div>
+      <div class="msub" id="s-chuva">Sul / Centro-Oeste</div>
+    </div>
+    <div class="metric" id="m-res">
+      <div class="mlabel"><i class="ti ti-droplet"></i> Reservatórios SIN</div>
+      <div class="mvalue" id="v-res">—</div>
+      <div class="msub" id="s-res">Média nacional</div>
+    </div>
+    <div class="metric" id="m-agri">
+      <div class="mlabel"><i class="ti ti-plant"></i> Risco agrícola</div>
+      <div class="mvalue" id="v-agri">—</div>
+      <div class="msub" id="s-agri">Índice composto</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('analise',this)"><i class="ti ti-activity"></i> Análise ao vivo</button>
+    <button class="tab" onclick="switchTab('commodities',this)"><i class="ti ti-plant-2"></i> Commodities</button>
+    <button class="tab" onclick="switchTab('reservatorios',this)"><i class="ti ti-droplet-half-2"></i> Reservatórios</button>
+    <button class="tab" onclick="switchTab('familia',this)"><i class="ti ti-home"></i> Plano família</button>
+  </div>
+
+  <!-- ANÁLISE -->
+  <div class="panel active" id="tab-analise">
+    <div class="chatbox empty" id="analysis-output">Pressione "Executar vigilância" para obter análise completa com dados ao vivo sobre El Niño 2026/2027, safras e reservatórios do Brasil.</div>
+    <div class="input-row">
+      <input class="cinput" id="custom-query" placeholder="Pergunte algo... ex: situação das chuvas no Sul" onkeydown="if(event.key==='Enter')runAnalysis()">
+      <button class="btn-sec" onclick="runAnalysis()"><i class="ti ti-search"></i> Buscar</button>
+    </div>
+    <div class="pills">
+      <button class="pill" onclick="quickQuery('Situação atual das chuvas no Sul e Centro-Oeste do Brasil junho 2026')">Chuvas Sul/CO</button>
+      <button class="pill" onclick="quickQuery('Níveis reservatórios hidrelétricos brasileiros SIN junho 2026')">Reservatórios</button>
+      <button class="pill" onclick="quickQuery('Previsão ENSO El Niño 2026 2027 NOAA CPTEC atualização')">Previsão ENSO</button>
+      <button class="pill" onclick="quickQuery('Safra soja milho Brasil 2026 CONAB previsão colheita')">Safra grãos</button>
+      <button class="pill" onclick="quickQuery('Inflação alimentos Brasil 2026 arroz feijão preços')">Preços alimentos</button>
+      <button class="pill" onclick="quickQuery('Seca estiagem regiões Brasil junho 2026')">Seca/Estiagem</button>
+    </div>
+  </div>
+
+  <!-- COMMODITIES -->
+  <div class="panel" id="tab-commodities">
+    <div class="card">
+      <div class="stitle"><i class="ti ti-chart-bar"></i> Matriz de risco por commodity</div>
+      <div class="cgrid" id="cgrid">
+        <div class="ccard"><div class="cname">Soja</div><div class="rbadge r-med">MÉDIO</div><div class="cnote">Aguardando análise</div></div>
+        <div class="ccard"><div class="cname">Milho safrinha</div><div class="rbadge r-med">MÉDIO</div><div class="cnote">Aguardando análise</div></div>
+        <div class="ccard"><div class="cname">Feijão</div><div class="rbadge r-low">BAIXO</div><div class="cnote">Aguardando análise</div></div>
+        <div class="ccard"><div class="cname">Arroz</div><div class="rbadge r-low">BAIXO</div><div class="cnote">Aguardando análise</div></div>
+        <div class="ccard"><div class="cname">Trigo</div><div class="rbadge r-med">MÉDIO</div><div class="cnote">Aguardando análise</div></div>
+        <div class="ccard"><div class="cname">Café</div><div class="rbadge r-low">BAIXO</div><div class="cnote">Aguardando análise</div></div>
+        <div class="ccard"><div class="cname">Cana-de-açúcar</div><div class="rbadge r-low">BAIXO</div><div class="cnote">Aguardando análise</div></div>
+        <div class="ccard"><div class="cname">Milho 1ª safra</div><div class="rbadge r-low">BAIXO</div><div class="cnote">Aguardando análise</div></div>
+      </div>
+    </div>
+    <button class="btn-sec" onclick="analyzeTab('commodities')"><i class="ti ti-refresh"></i> Atualizar análise</button>
+    <div class="chatbox" id="commodity-output" style="margin-top:10px;display:none"></div>
+  </div>
+
+  <!-- RESERVATÓRIOS -->
+  <div class="panel" id="tab-reservatorios">
+    <div class="two">
+      <div class="card">
+        <div class="stitle"><i class="ti ti-droplet-half-2"></i> Bacias hidrográficas</div>
+        <div class="ritem"><div class="rheader"><span class="rname">Paraná</span><span id="r-parana">—%</span></div><div class="bartrack"><div class="barfill" id="b-parana" style="width:0%;background:#378ADD"></div></div></div>
+        <div class="ritem"><div class="rheader"><span class="rname">São Francisco</span><span id="r-sf">—%</span></div><div class="bartrack"><div class="barfill" id="b-sf" style="width:0%;background:#1D9E75"></div></div></div>
+        <div class="ritem"><div class="rheader"><span class="rname">Tocantins</span><span id="r-tocantins">—%</span></div><div class="bartrack"><div class="barfill" id="b-tocantins" style="width:0%;background:#639922"></div></div></div>
+        <div class="ritem"><div class="rheader"><span class="rname">Madeira</span><span id="r-madeira">—%</span></div><div class="bartrack"><div class="barfill" id="b-madeira" style="width:0%;background:#BA7517"></div></div></div>
+        <div class="ritem"><div class="rheader"><span class="rname">Grande</span><span id="r-grande">—%</span></div><div class="bartrack"><div class="barfill" id="b-grande" style="width:0%;background:#185FA5"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="stitle"><i class="ti ti-bolt"></i> Geração de energia</div>
+        <div id="energy-info" style="font-size:13px;color:var(--text-muted);font-style:italic">Execute a análise para obter dados de geração hídrica e risco de racionamento.</div>
+      </div>
+    </div>
+    <button class="btn-sec" onclick="analyzeTab('reservatorios')"><i class="ti ti-refresh"></i> Buscar dados ONS/ANA</button>
+    <div class="chatbox" id="reservoir-output" style="margin-top:10px;display:none"></div>
+  </div>
+
+  <!-- FAMÍLIA -->
+  <div class="panel" id="tab-familia">
+    <div class="two">
+      <div class="card">
+        <div class="stitle"><i class="ti ti-package"></i> Estoque alimentar</div>
+        <ul class="alist" id="list-estoque"><li class="aitem"><div class="anum">—</div><div class="atext">Execute a vigilância para receber orientações personalizadas.</div></li></ul>
+      </div>
+      <div class="card">
+        <div class="stitle"><i class="ti ti-bolt"></i> Energia</div>
+        <ul class="alist" id="list-energia"><li class="aitem"><div class="anum">—</div><div class="atext">Aguardando análise de risco energético.</div></li></ul>
+      </div>
+      <div class="card">
+        <div class="stitle"><i class="ti ti-coin"></i> Finanças</div>
+        <ul class="alist" id="list-financas"><li class="aitem"><div class="anum">—</div><div class="atext">Aguardando análise de impacto inflacionário.</div></li></ul>
+      </div>
+      <div class="card">
+        <div class="stitle"><i class="ti ti-heart-rate-monitor"></i> Saúde & Logística</div>
+        <ul class="alist" id="list-saude"><li class="aitem"><div class="anum">—</div><div class="atext">Aguardando análise de riscos à saúde.</div></li></ul>
+      </div>
+    </div>
+    <button class="btn-sec" onclick="analyzeTab('familia')"><i class="ti ti-refresh"></i> Gerar plano atualizado</button>
+    <div class="chatbox" id="family-output" style="margin-top:10px;display:none"></div>
+  </div>
+
+  <div class="verse">"Preparai as vossas provisões, porque dentro de três dias passareis este Jordão..." — Josué 1:11</div>
+</div>
+
+<script>
+const PROXY = '/.netlify/functions/claude';
+
+function switchTab(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+function setStatus(loading, text) {
+  document.getElementById('sdot').className = 'sdot' + (loading ? ' spin' : '');
+  document.getElementById('stext').textContent = text;
+}
+
+function setAlert(level, text) {
+  const bar = document.getElementById('alert-bar');
+  const map = {ok:'a-ok', watch:'a-watch', warn:'a-warn', emerg:'a-emerg'};
+  const icons = {ok:'ti-circle-check', watch:'ti-alert-triangle', warn:'ti-alert-circle', emerg:'ti-flame'};
+  bar.className = 'alert-bar ' + (map[level] || 'a-watch');
+  bar.innerHTML = `<i class="ti ${icons[level]||'ti-alert-triangle'}"></i><span>${text}</span>`;
+}
+
+function setMetric(id, value, sub, cls) {
+  document.getElementById('m-' + id).className = 'metric ' + (cls || '');
+  document.getElementById('v-' + id).textContent = value;
+  document.getElementById('s-' + id).textContent = sub;
+}
+
+async function callClaude(userMsg, systemExtra) {
+  const res = await fetch(PROXY, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      system: `Você é Josué 1:11, sistema de inteligência climática e segurança alimentar brasileiro.
+Use busca web para obter dados atuais de junho 2026.
+Responda em português brasileiro, de forma clara e estruturada.
+${systemExtra || ''}`,
+      messages: [{ role: 'user', content: userMsg }]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n') || 'Sem resposta.';
+}
+
+function quickQuery(q) {
+  document.getElementById('custom-query').value = q;
+  runAnalysis();
+}
+
+async function runAnalysis() {
+  const btn = document.getElementById('btn-run');
+  const out = document.getElementById('analysis-output');
+  const q = document.getElementById('custom-query').value.trim();
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader spinning"></i> Analisando...';
+  setStatus(true, 'Buscando dados...');
+  out.className = 'chatbox';
+  out.textContent = '🔍 Executando vigilância climática com busca de dados em tempo real...\n\nConsultando NOAA, CPTEC/INPE, CONAB, ONS/ANA...';
+
+  const query = q || `Análise climática e segurança alimentar para o Brasil em junho 2026:
+1. Status ENSO/El Niño 2026-2027 — anomalia SST Niño 3.4 atual
+2. Anomalias de precipitação: Sul, Centro-Oeste, Nordeste
+3. Reservatórios hidrelétricos SIN — nível atual
+4. Risco para safras: soja, milho, feijão, arroz
+5. Nível de alerta geral recomendado
+6. Top 3 ações para famílias brasileiras
+Busque os dados mais recentes disponíveis.`;
+
+  try {
+    const result = await callClaude(query,
+      `Ao final inclua exatamente esta linha com métricas:
+METRICS:{"enso":{"v":"X.X°C","s":"status curto","c":""},"chuva":{"v":"XX%","s":"status curto","c":""},"res":{"v":"XX%","s":"status curto","c":""},"agri":{"v":"BAIXO","s":"status curto","c":""}}
+Para c use: m-ok, m-warn ou m-danger conforme o risco.`
+    );
+
+    const mm = result.match(/METRICS:(\{.*\})/);
+    const clean = result.replace(/METRICS:\{.*\}/, '').trim();
+    if (mm) {
+      try {
+        const d = JSON.parse(mm[1]);
+        setMetric('enso', d.enso.v, d.enso.s, d.enso.c);
+        setMetric('chuva', d.chuva.v, d.chuva.s, d.chuva.c);
+        setMetric('res', d.res.v, d.res.s, d.res.c);
+        setMetric('agri', d.agri.v, d.agri.s, d.agri.c);
+      } catch(e) {}
+    }
+
+    out.textContent = clean;
+    const low = clean.toLowerCase();
+    if (low.includes('emergência') || low.includes('crítico') || low.includes('severo'))
+      setAlert('emerg', '🚨 EMERGÊNCIA — Condições críticas detectadas. Ação imediata necessária.');
+    else if (low.includes('aviso') || low.includes('risco alto') || low.includes('alerta vermelho'))
+      setAlert('warn', '⚠️ AVISO — Condições adversas confirmadas. Monitoramento intensificado.');
+    else if (low.includes('atenção') || low.includes('moderado') || low.includes('watch'))
+      setAlert('watch', '🟡 ATENÇÃO — Anomalias em desenvolvimento. Acompanhe as atualizações.');
+    else
+      setAlert('ok', '✅ ESTÁVEL — Condições dentro dos parâmetros normais para o período.');
+
+    setStatus(false, 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR'));
+  } catch(err) {
+    out.textContent = '❌ Erro: ' + err.message;
+    setAlert('watch', 'Erro na consulta. Tente novamente.');
+    setStatus(false, 'Erro');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-radar"></i> Executar vigilância';
+}
+
+async function analyzeTab(tab) {
+  const out = document.getElementById({commodities:'commodity-output', reservatorios:'reservoir-output', familia:'family-output'}[tab]);
+  out.style.display = 'block';
+  out.className = 'chatbox';
+  out.textContent = '🔍 Buscando dados atualizados...';
+  setStatus(true, 'Analisando...');
+
+  const queries = {
+    commodities: `Análise das principais commodities agrícolas brasileiras junho 2026.
+Para cada uma: soja, milho safrinha, feijão, arroz, trigo, café, cana.
+Risco climático: BAIXO / MÉDIO / ALTO / CRÍTICO.
+Situação atual da safra e tendência de preços. Fontes: CONAB, USDA, CEPEA.`,
+    reservatorios: `Níveis atuais dos reservatórios hidrelétricos brasileiros junho 2026.
+Percentual de armazenamento: bacias do Paraná, São Francisco, Tocantins, Madeira e Grande.
+Risco de racionamento de energia elétrica. Fontes: ONS, ANA, ANEEL.`,
+    familia: `Plano de proteção familiar para famílias brasileiras diante dos riscos climáticos junho 2026.
+4 seções com 3 ações práticas cada:
+ESTOQUE: alimentos e água 30-90 dias
+ENERGIA: backup e economia
+FINANÇAS: hedge inflação
+SAÚDE E LOGÍSTICA: saúde, comunicação, apoio
+Foco em famílias brasileiras de classe média, prático e específico.`
+  };
+
+  try {
+    const result = await callClaude(queries[tab]);
+    out.textContent = result;
+
+    if (tab === 'reservatorios') {
+      const nums = [...result.matchAll(/(\d{1,3})\s*%/g)].map(m => parseInt(m[1]));
+      [['parana','b-parana','r-parana'],['sf','b-sf','r-sf'],['tocantins','b-tocantins','r-tocantins'],['madeira','b-madeira','r-madeira'],['grande','b-grande','r-grande']]
+        .forEach(([,bid,rid], i) => {
+          const pct = Math.min(100, Math.max(0, nums[i] || 50));
+          document.getElementById(bid).style.width = pct + '%';
+          document.getElementById(bid).style.background = pct < 25 ? '#E24B4A' : pct < 40 ? '#EF9F27' : '#1D9E75';
+          document.getElementById(rid).textContent = pct + '%';
+        });
+    }
+
+    if (tab === 'familia') {
+      const lines = result.split('\n').filter(l => l.trim().match(/^(\d+\.|[-•*])\s+/));
+      [['list-estoque',0],['list-energia',1],['list-financas',2],['list-saude',3]].forEach(([id, i]) => {
+        const items = lines.slice(i*3, i*3+3);
+        if (items.length) document.getElementById(id).innerHTML = items.map((l,j) =>
+          `<li class="aitem"><div class="anum">${j+1}</div><div class="atext">${l.replace(/^(\d+\.|[-•*])\s+/,'')}</div></li>`
+        ).join('');
+      });
+    }
+
+    if (tab === 'commodities') {
+      const names = ['Soja','Milho safrinha','Feijão','Arroz','Trigo','Café','Cana-de-açúcar','Milho 1ª safra'];
+      document.getElementById('cgrid').innerHTML = names.map(name => {
+        const idx = result.toLowerCase().indexOf(name.toLowerCase());
+        let cls = 'r-low', lbl = 'BAIXO';
+        if (idx > -1) {
+          const s = result.substring(idx, idx+300).toLowerCase();
+          if (s.includes('crítico')) { cls='r-crit'; lbl='CRÍTICO'; }
+          else if (s.includes('alto')) { cls='r-high'; lbl='ALTO'; }
+          else if (s.includes('médio')||s.includes('moderado')||s.includes('atenção')) { cls='r-med'; lbl='MÉDIO'; }
+        }
+        return `<div class="ccard"><div class="cname">${name}</div><div class="rbadge ${cls}">${lbl}</div><div class="cnote">Ver análise abaixo</div></div>`;
+      }).join('');
+    }
+
+    setStatus(false, 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR'));
+  } catch(err) {
+    out.textContent = '❌ Erro: ' + err.message;
+    setStatus(false, 'Erro');
+  }
+}
+</script>
+</body>
+</html>
