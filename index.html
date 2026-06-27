@@ -252,8 +252,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <script>
-const API_KEY = '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';
-const API_URL = 'https://api.anthropic.com/v1/messages';
+const PROXY = '/.netlify/functions/claude';
 
 function switchTab(name, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -282,13 +281,10 @@ function setMetric(id, value, sub, cls) {
 }
 
 async function callClaude(userMsg, systemExtra) {
-  const res = await fetch(API_URL, {
+  const res = await fetch(PROXY, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': API_KEY,
-      'anthropic-version': '2023-06-01',
-      'anthropic-beta': 'interleaved-thinking-2025-05-14'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
